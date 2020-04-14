@@ -158,7 +158,7 @@ def main():
     # Loop 0
     # Loop 1
 
-    #
+    # Item 10: Prevent Repetition w/Assignment Expressions
     # walrus operator
     fresh_fruit = {
         'apple': 10,
@@ -235,9 +235,10 @@ def main():
             batch = make_juice(fruit, count)
             bottles.extend(batch)
 
+
 ##############################################################
 if __name__ == "__main__":
     # execute only if run as a script
     main()
 
-    # run as such: ~ / src / effectivepython[master *] python3 snippets_rb.py
+    # run as such: ~ / src / effectivepython[master *] python3 chapter_1.py
