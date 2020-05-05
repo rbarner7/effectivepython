@@ -115,6 +115,35 @@ def main():
     numbers.sort(key=sorter)
     assert sorter.found is True
 
+    # Item 22: Reduce Visual Noise with Variable Positional Arguments
+    def log(message, *values):  # The only difference
+        if not values:
+            print(message)
+        else:
+            values_str = ', '.join(str(x) for x in values)
+        print(f'{message}: {values_str}')
+
+    log('My numbers are', 1, 2)
+    log('Hi there')  # Much better
+
+    # >>>
+    # My numbers are: 1, 2
+    # Hi there
+
+    def my_generator():
+        for i in range(10):
+            yield i
+
+    def my_func(*args):
+        print(args)
+
+    it = my_generator()
+    my_func(*it)
+
+    # >>> (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+    # Item 23: Provide Optional Behavior with Keyword Arguments
+    
 
 ##############################################################
 if __name__ == "__main__":
