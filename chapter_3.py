@@ -1,6 +1,19 @@
-def main():
+def main(follows=None):
 
     # Item 19: Never Unpack More Than Three Variables When Functions Return Multiple Values
+    # unpacking statement
+    first, second = 1, 2
+    assert first == 1
+    assert second == 2
+
+    # Done another way; multiple-return function returns two-item tuple
+    def my_function():
+        return 1, 2
+
+    first, second = my_function()
+    assert first == 1
+    assert second == 2
+
     def get_stats(numbers):
         minimum = min(numbers)
         maximum = max(numbers)
@@ -143,7 +156,39 @@ def main():
     # >>> (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
     # Item 23: Provide Optional Behavior with Keyword Arguments
+    def remainder(number, divisor):
+        return number % divisor
 
+    # All equivalent
+    remainder(20, 7)
+    remainder(20, divisor=7)
+    remainder(number=20, divisor=7)
+    remainder(divisor=7, number=20)
+
+    # Keyword arguments must come after positional arguments
+    remainder(number=20, 7)
+
+    # >>>
+    # Traceback...SyntaxError: positional argument follows keyword argument
+
+    remainder(20, number=7)
+
+    # >>>
+    # Traceback...TypeError: remainder() got multiple values for argument
+    # ➥ 'number
+
+    # **args
+    my_kwargs = {
+        'number': 20,
+        'divisor': 7,
+    }
+
+    assert remainder(**my_kwargs) == 6
+
+    my_kwargs = {
+        'divisor': 7,
+    }
+    assert remainder(number=20, **my_kwargs) == 6
 
 ##############################################################
 if __name__ == "__main__":

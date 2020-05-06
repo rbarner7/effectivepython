@@ -86,6 +86,7 @@ my_kwargs = {
 	'divisor': 7,
 }
 assert remainder(**my_kwargs) == 6
+# Instructs Python to pass the values from the dictionary as the corresponding keyword arguments of the function
 
 
 # Example 6
@@ -93,6 +94,7 @@ my_kwargs = {
 	'divisor': 7,
 }
 assert remainder(number=20, **my_kwargs) == 6
+# Mixed with postional arguments or keyword arguments, as long as no argument is repeated
 
 
 # Example 7
@@ -102,7 +104,7 @@ my_kwargs = {
 other_kwargs = {
 	'divisor': 7,
 }
-assert remainder(**my_kwargs, **other_kwargs) == 6
+assert remainder(**my_kwargs, **other_kwargs) == 6 # no overlapping keys?  free to use ** operator multiple times
 
 
 # Example 8
