@@ -16,6 +16,7 @@
 
 # Reproduce book environment
 import random
+
 random.seed(1234)
 
 import logging
@@ -37,11 +38,13 @@ OLD_CWD = os.getcwd()
 atexit.register(lambda: os.chdir(OLD_CWD))
 os.chdir(TEST_DIR.name)
 
+
 def close_open_files():
     everything = gc.get_objects()
     for obj in everything:
         if isinstance(obj, io.IOBase):
             obj.close()
+
 
 atexit.register(close_open_files)
 
@@ -53,6 +56,7 @@ def trace(func):
         print(f'{func.__name__}({args!r}, {kwargs!r}) '
               f'-> {result!r}')
         return result
+
     return wrapper
 
 
@@ -72,45 +76,56 @@ def fibonacci(n):
         return n
     return fibonacci(n - 2) + fibonacci(n - 1)
 
-fibonacci = trace(fibonacci)
+
+fibonacci = trace(fibonacci)  # trace returns the wrapper defined within its body
+# wrapper gets assigned to the fibonacci name in the containing module because of the decorator
+# this is problematic because it undermines tools that do introspection, such as debuggers
 
 
 # Example 4
 fibonacci(4)
 
-
 # Example 5
 print(fibonacci)
 
+# >>>
+# <function trace.<locals>.wrapper at 0x108955dc0>
 
-# Example 6
-help(fibonacci)
+# Example 6: Unexpected behavior
+help(fibonacci) # should return fibonacci's docstring ("Return the n-th Fibonacci number") but doesn't
 
+# >>>
+# Help on function wrapper in module __main__: # runs help on wrapper instead of fibonacci
+# # because fibonacci is decorated bytrace
+#
+# wrapper(*args, **kwargs)
 
 # Example 7
 try:
     import pickle
-    
+
     pickle.dumps(fibonacci)
 except:
     logging.exception('Expected')
 else:
     assert False
 
-
-# Example 8
+# Example 8: Correct approach yielding expected behavior
 from functools import wraps
 
+
 def trace(func):
-    @wraps(func)
+    @wraps(func) 
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         print(f'{func.__name__}({args!r}, {kwargs!r}) '
               f'-> {result!r}')
         return result
+
     return wrapper
 
-@trace
+
+@trace # fibonacci is decorated
 def fibonacci(n):
     """Return the n-th Fibonacci number"""
     if n in (0, 1):
@@ -120,7 +135,14 @@ def fibonacci(n):
 
 # Example 9
 help(fibonacci)
+# >>>
+# Help on function fibonacci in module __main__:
+# fibonacci(n)
+#       Return the n-th Fibonacci number
 
 
 # Example 10
-print(pickle.dumps(fibonacci))
+print(pickle.dumps(fibonacci))  # pickle is an object serializer
+# >>>
+# b'\x80\x04\x95\x1a\x00\x00\x00\x00\x00\x00\x00\x8c\x08__main__\
+# ➥x94\x8c\tfibonacci\x94\x93\x94.

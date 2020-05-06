@@ -186,7 +186,7 @@ else:
 
 
 # Example 13
-def safe_division_d(numerator, denominator, /, *,  # Changed
+def safe_division_d(numerator, denominator, /, *,  # / indicates the end of positional-only arguments
                     ignore_overflow=False,
                     ignore_zero_division=False):
     try:
