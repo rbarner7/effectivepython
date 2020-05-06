@@ -150,6 +150,7 @@ assert safe_division_c(2, divisor=5) == 0.4
 
 
 # Example 11
+# * indicates the end of positional arguments and the beginning of keyword-only arguments
 def safe_division_c(numerator, denominator, *,  # Changed
                     ignore_overflow=False,
                     ignore_zero_division=False):
@@ -165,6 +166,14 @@ def safe_division_c(numerator, denominator, *,  # Changed
             return float('inf')
         else:
             raise
+
+
+safe_division_c(1.0, 10**500, True, False)  # True & False interpreted as positional arguments instead of keyword
+
+# >>>
+# Traceback ...
+# TypeError: safe_division_c() takes 2 positional arguments but 4
+# ➥were given
 
 
 # Example 12

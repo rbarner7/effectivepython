@@ -113,6 +113,10 @@ def print_parameters(**kwargs):
         print(f'{key} = {value}')
 
 print_parameters(alpha=1.5, beta=9, gamma=4)
+# >>>
+# alpha = 1.5
+# beta = 9
+# gamma = 4
 
 
 # Example 9
@@ -160,4 +164,6 @@ print(pounds_per_hour)
 
 # Example 16
 pounds_per_hour = flow_rate(weight_diff, time_diff, 3600, 2.2)
+# reduce confusion (here for eg) by always specifying optional arguments
+# using the keyword names and never pass them as positional arguments
 print(pounds_per_hour)

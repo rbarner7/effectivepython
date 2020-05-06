@@ -57,9 +57,13 @@ log('Hi there!')
 sleep(0.1)
 log('Hello again!')
 
+# >>>
+# 2019-07-06 14:06:15.120124: Hi there!
+# 2019-07-06 14:06:15.120124: Hello again!
 
 # Example 2
 def log(message, when=None):
+    # Document actual behavior in the docstring.
     """Log a message with a timestamp.
 
     Args:
@@ -68,7 +72,7 @@ def log(message, when=None):
             Defaults to the present time.
     """
     if when is None:
-        when = datetime.now()
+        when = datetime.now() # Allocate accordingly
     print(f'{when}: {message}')
 
 
@@ -96,12 +100,16 @@ bar['meep'] = 1
 print('Foo:', foo)
 print('Bar:', bar)
 
+# >>>
+# # foo & bar are equal to the default parameter: they are the same dictionary object (demonstrated below)
+# Foo: {'stuff': 5, 'meep': 1}
+# Bar: {'stuff': 5, 'meep': 1}
 
 # Example 6
 assert foo is bar
 
 
-# Example 7
+# Example 7: Correct approach
 def decode(data, default=None):
     """Load JSON data from a string.
 
@@ -126,3 +134,25 @@ bar['meep'] = 1
 print('Foo:', foo)
 print('Bar:', bar)
 assert foo is not bar
+
+# >>>
+# Foo: {'stuff': 5}
+# Bar: {'meep': 1}
+
+
+# Example 9
+# None default also works with type annotations
+from typing import Optional
+
+def log_typed(message: str,
+              when: Optional[datetime]=None) -> None: # only 2 valid choices for when are None or a datetime object
+    """Log a message with a timestamp.
+
+    Args:
+        message: Message to print.
+        when: datetime of when the message occurred.
+            Defaults to the present time.
+    """
+    if when is None:
+        when = datetime.now()
+    print(f'{when}: {message}')
